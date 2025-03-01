@@ -114,7 +114,7 @@ namespace VoiakaBotBackEnd
                                     }
                                     else if (message.Text == "Покажи всё что в наличие")
                                     {
-                                        products = WorkingToDB.GetAllProduct();
+                                        products = WorkingToDB.GetAllProduct().Result;
                                         List<InlineKeyboardButton> buttons = new List<InlineKeyboardButton>();
                                         for (int i = 0; i < products.Count; i++)
                                         {
@@ -152,18 +152,14 @@ namespace VoiakaBotBackEnd
                         // Мы пишем не callbackQuery.Chat , а callbackQuery.Message.Chat , так как
                         // кнопка привязана к сообщению, то мы берем информацию от сообщения.
                         var chat1 = callbackQuery.Message.Chat;
-                        await botClient.SendTextMessageAsync(
-                                            chat1.Id,
-                                            $"Заказ создан на {callbackQuery.Message}\nДля уточнения статуса заказа пишите хозяину бота @VoiakaGM\nУкажите что вы заказали"
-                                            );
                         for (int i = 0; i < products.Count; i++)
                         {
                             if (callbackQuery.Data == products[i].ID.ToString())
                             {
-                                WorkingToDB.BuyProduct(products[i].ID, user1.Username);
+                                string order = WorkingToDB.BuyProduct(products[i].ID, user1.Username).Result;
                                 await botClient.SendTextMessageAsync(
                                             chat1.Id,
-                                            $"Заказ создан на {callbackQuery.Message}\nДля уточнения статуса заказа пишите хозяину бота @VoiakaGM\nУкажите что вы заказали"
+                                            $"Заказ создан на {order}\nДля уточнения статуса заказа пишите хозяину бота @VoiakaGM\nУкажите что вы заказали"
                                             );
                             }
                         }
