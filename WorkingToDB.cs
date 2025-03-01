@@ -15,7 +15,7 @@ namespace VoiakaBotBackEnd
         public static List<Product> GetAllProduct()
         {
             List<Product> products = new List<Product>();
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;User Id=AlterEgo;Password=123; TrustServerCertificate=True"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -41,7 +41,7 @@ namespace VoiakaBotBackEnd
         }
         public static bool BuyProduct(int idProduct, string userName)
         {
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Id=Mary5;Password=123"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -70,7 +70,7 @@ namespace VoiakaBotBackEnd
         }
         public static void SetProduct(string nameProduct, decimal price, int quantity, string warranty)
         {
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Id=Mary5;Password=123"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -83,7 +83,7 @@ namespace VoiakaBotBackEnd
         public static string GetOrders()
         {
             string str = "Имя заказчика//Имя продукта//Цена//Колчество//Гарантия";
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Id=Mary5;Password=123"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -104,7 +104,7 @@ namespace VoiakaBotBackEnd
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Id=Mary5;Password=123"))
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
                 {
                     connection.Open();
                     using (SqlCommand cmd = connection.CreateCommand())
