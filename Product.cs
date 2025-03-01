@@ -10,8 +10,9 @@ namespace VoiakaBotBackEnd
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
+        public string Price { get; set; }
         public int QuantityProduct { get; set; }
         public string WarrantyProduct { get; set; }
+        public string State { get; set; }
     }
 }
