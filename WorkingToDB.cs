@@ -72,27 +72,27 @@ namespace VoiakaBotBackEnd
                         //cmd.Parameters.Add("@State", SqlDbType.NVarChar).Value = list[3];
                         //await cmd.ExecuteNonQueryAsync();
                         //cmd.Parameters.Clear();
-                        cmd.CommandText = "SELECT QuantityProduct FROM Production WHERE Id = @idProduct";
-                        cmd.Parameters.Add("@idProduct", SqlDbType.Int).Value = idProduct;
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.ReadAsync().Result)
-                            {
-                                int count = (int)reader["QuantityProduct"];
-                                reader.Close();
-                                if (count > 0)
-                                {
-                                    cmd.CommandText = "UPDATE Production SET QuantityProduct = @QuantityProduct WHERE Id = @idProduct";
-                                    cmd.Parameters.Add("@QuantityProduct", SqlDbType.Int).Value = count - 1;
-                                    await cmd.ExecuteNonQueryAsync();
-                                }
-                                //        //else
-                                //        //{
-                                //        //    cmd.CommandText = $"DELETE FROM Production WHERE Id = @idProduct";
-                                //        //    await cmd.ExecuteNonQueryAsync();
-                                //        //}
-                            }
-                        }
+                        //cmd.CommandText = "SELECT QuantityProduct FROM Production WHERE Id = @idProduct";
+                        //cmd.Parameters.Add("@idProduct", SqlDbType.Int).Value = idProduct;
+                        //using (SqlDataReader reader = cmd.ExecuteReader())
+                        //{
+                        //    if (reader.ReadAsync().Result)
+                        //    {
+                        //        int count = (int)reader["QuantityProduct"];
+                        //        reader.Close();
+                        //        if (count > 0)
+                        //        {
+                        //            cmd.CommandText = "UPDATE Production SET QuantityProduct = @QuantityProduct WHERE Id = @idProduct";
+                        //            cmd.Parameters.Add("@QuantityProduct", SqlDbType.Int).Value = count - 1;
+                        //            await cmd.ExecuteNonQueryAsync();
+                        //        }
+                        //        //else
+                        //        //{
+                        //        //    cmd.CommandText = $"DELETE FROM Production WHERE Id = @idProduct";
+                        //        //    await cmd.ExecuteNonQueryAsync();
+                        //        //}
+                        //    }
+                        //}
                         return list[0];
                     }
                     catch (Exception ex) { return null; }
@@ -156,6 +156,54 @@ namespace VoiakaBotBackEnd
                 return null;
             }
         }
+        public async static void SetProductUpDownt(Product product, int count)
+        {
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+            {
+                connection.Open();
+                using (SqlCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = $"UPDATE Production SET QuantityProduct = @QuantityProduct WHERE Id = {product.ID}";
+                    cmd.Parameters.Add("@QuantityProduct", SqlDbType.Int).Value = count;
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
+        public async static Task<Product> GetProductUpDown(int idProduct)
+        {
+            try
+            {
+                Product product = null;
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+                {
+                    connection.Open();
+                    using (SqlCommand cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = $"SELECT * FROM Production WHERE Id = {idProduct}";
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.ReadAsync().Result)
+                            {
+                                product = new Product()
+                                {
+                                    ID = (int)reader[0],
+                                    Name = (string)reader[1],
+                                    Price = (string)reader[2],
+                                    QuantityProduct = (int)reader[3],
+                                    WarrantyProduct = (string)reader[4],
+                                    State = (string)reader[5]
+                                };
+                            }
+                        }
+                    }
+                }
+                return product;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public async static void DelProduct(int idProduct)
         {
             try
@@ -170,7 +218,7 @@ namespace VoiakaBotBackEnd
                     }
                 }
             }
-            catch 
+            catch
             {
             }
         }

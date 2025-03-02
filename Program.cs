@@ -19,6 +19,8 @@ namespace VoiakaBotBackEnd
     {
         private static bool IsDelProduct = false;
         private static bool IsSetProduct = false;
+        private static bool IsUpDownProduct = false;
+        private static Product Product;
         private static List<Product> products;
         private static List<Orders> orders;
         private static ITelegramBotClient _client;
@@ -86,10 +88,14 @@ namespace VoiakaBotBackEnd
                                             {
                                                 new KeyboardButton("Покажи видеокарты в наличие"),
                                                 new KeyboardButton("Добавить видеокарт"),
-                                                new KeyboardButton("Удаление продуктов"),
                                                 //todo вернуть когда понадобиться база заказчиков
                                                 //new KeyboardButton("Показать всех заказчиков"),
                                             },
+                                            new KeyboardButton[]
+                                            {
+                                                new KeyboardButton("Удаление видеокарты"),
+                                                 new KeyboardButton("Изменение количества видеокарт в наличие"),
+                                            }
                                         })
                                         {
                                             ResizeKeyboard = true,
@@ -124,44 +130,67 @@ namespace VoiakaBotBackEnd
                                             chat.Id,
                                             $"{System.IO.File.ReadAllText(Directory.GetCurrentDirectory() + "\\ConsultationText.txt")}"
                                             );
-                                    }    
-                                    else if (message.Text == "Покажи видеокарты в наличие")
-                                    {
-                                        products = WorkingToDB.GetAllProduct().Result;
-                                        List<InlineKeyboardButton[]> buttons = new List<InlineKeyboardButton[]>();
-                                        for (int i = 0; i < products.Count; i++)
-                                        {
-                                            buttons.Add(new InlineKeyboardButton[]{ InlineKeyboardButton.WithCallbackData($"{products[i].Name}, {products[i].Price}, " +
-                                                $"{products[i].WarrantyProduct}, {products[i].State}", $"{products[i].ID}") });
-                                        }
-                                        var inlineKeyboard = new InlineKeyboardMarkup(
-                                        buttons.ToArray());
-
-                                        await botClient.SendTextMessageAsync(
-                                            chat.Id,
-                                            "Выберите продукт для заказа",
-                                            replyMarkup: inlineKeyboard);
-
-                                        return;
                                     }
                                     else if (message.Text == "Покажи видеокарты в наличие" && user.Id == 971061398)
                                     {
                                         products = WorkingToDB.GetAllProduct().Result;
-                                        List<InlineKeyboardButton[]> buttons = new List<InlineKeyboardButton[]>();
+                                        await botClient.SendTextMessageAsync(
+                                                chat.Id,
+                                                    "Выберите видеокарту для заказа");
                                         for (int i = 0; i < products.Count; i++)
                                         {
-                                            buttons.Add(new InlineKeyboardButton[]{ InlineKeyboardButton.WithCallbackData($"{products[i].Name}, {products[i].Price}, Наличие: {products[i].QuantityProduct}, " +
-                                                $"{products[i].WarrantyProduct}, {products[i].State}", $"{products[i].ID}") });
-                                        }
-                                        var inlineKeyboard = new InlineKeyboardMarkup(
-                                        buttons.ToArray());
 
-                                        await botClient.SendTextMessageAsync(
-                                            chat.Id,
-                                            "Выберите продукт для заказа",
-                                            replyMarkup: inlineKeyboard);
+                                            var inlineKeyboard = new InlineKeyboardMarkup(new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData($"Заказать!", $"{products[i].ID}") });
+
+                                            await botClient.SendTextMessageAsync(
+                                                chat.Id,
+                                                $"{products[i].Name}, {products[i].Price}, Наличие: {products[i].QuantityProduct}\n" +
+                                                $"{products[i].WarrantyProduct}, {products[i].State}",
+                                                replyMarkup: inlineKeyboard);
+                                        }
 
                                         return;
+                                    }
+                                    else if (message.Text == "Покажи видеокарты в наличие")
+                                    {
+                                        products = WorkingToDB.GetAllProduct().Result;
+                                        await botClient.SendTextMessageAsync(
+                                                chat.Id,
+                                            "Выберите видеокарту для заказа");
+                                        for (int i = 0; i < products.Count; i++)
+                                        {
+                                            var inlineKeyboard = new InlineKeyboardMarkup(
+                                            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData($"Заказать!", $"{products[i].ID}") });
+
+                                            await botClient.SendTextMessageAsync(
+                                                chat.Id,
+                                                $"{products[i].Name}, {products[i].Price}\n" +
+                                                $"{products[i].WarrantyProduct}, {products[i].State}",
+                                                replyMarkup: inlineKeyboard);
+                                        }
+
+                                        return;
+                                    }
+
+                                    else if (message.Text == "Изменение количества видеокарт в наличие" && user.Id == 971061398)
+                                    {
+                                        IsUpDownProduct = true;
+                                        products = WorkingToDB.GetAllProduct().Result;
+                                        await botClient.SendTextMessageAsync(
+                                                        chat.Id,
+                                    "Выберите видеокарту для изменения количества");
+                                        for (int i = 0; i < products.Count; i++)
+                                        {
+                                            var inlineKeyboard = new InlineKeyboardMarkup(
+                                            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData($"Изменить!", $"{products[i].ID}") });
+
+                                            await botClient.SendTextMessageAsync(
+                                                chat.Id,
+                                                $"{products[i].Name}, {products[i].Price}, Наличие: {products[i].QuantityProduct}\n" +
+                                                $"{products[i].WarrantyProduct}, {products[i].State}",
+                                                replyMarkup: inlineKeyboard);
+                                        }
+
                                     }
                                     //else if (message.Text == "Показать всех заказчиков" && user.Id == 971061398)
                                     //{
@@ -224,9 +253,13 @@ namespace VoiakaBotBackEnd
                                                 {
                                                 new KeyboardButton("Покажи видеокарты в наличие"),
                                                 new KeyboardButton("Добавить видеокарту"),
-                                                 new KeyboardButton("Удаление продуктов"),
                                                 //new KeyboardButton("Показать всех заказчиков"),
                                                 },
+                                            new KeyboardButton[]
+                                            {
+                                                new KeyboardButton("Удаление видеокарты"),
+                                                 new KeyboardButton("Изменение количества видеокарт в наличие"),
+                                            }
                                             })
                                         {
                                             ResizeKeyboard = true,
@@ -236,9 +269,10 @@ namespace VoiakaBotBackEnd
                                         "Выберите действие!",
                                         replyMarkup: replyKeyboard);
                                     }
-                                    else if (message.Text == "Отменить добавление видеокарты" && user.Id == 971061398)
+                                    else if (message.Text == "Отменить добавление видеокарты" && user.Id == 971061398 || message.Text == "Отменить изменение количества видеокарт" && user.Id == 971061398)
                                     {
                                         IsSetProduct = false;
+                                        IsUpDownProduct = false;
                                         var replyKeyboard = new ReplyKeyboardMarkup(
                                                 new List<KeyboardButton[]>()
                                                 {
@@ -246,10 +280,14 @@ namespace VoiakaBotBackEnd
                                                 {
                                                 new KeyboardButton("Покажи видеокарты в наличие"),
                                                 new KeyboardButton("Добавить видеокарты"),
-                                                 new KeyboardButton("Удаление видеокарты"),
                                                  //todo вернуть когда понадобиться база заказчиков
                                                 //new KeyboardButton("Показать всех заказчиков"),
                                                 },
+                                            new KeyboardButton[]
+                                            {
+                                                new KeyboardButton("Удаление видеокарты"),
+                                                 new KeyboardButton("Изменение количества видеокарт в наличие"),
+                                            }
                                                 })
                                         {
                                             ResizeKeyboard = true,
@@ -263,23 +301,63 @@ namespace VoiakaBotBackEnd
                                     {
                                         IsDelProduct = true;
                                         products = WorkingToDB.GetAllProduct().Result;
-                                        List<InlineKeyboardButton[]> buttons = new List<InlineKeyboardButton[]>();
+                                        await botClient.SendTextMessageAsync(
+                                        chat.Id,
+                                        "Выберите видеокарту для удаления");
                                         for (int i = 0; i < products.Count; i++)
                                         {
-                                            buttons.Add(new InlineKeyboardButton[]{ InlineKeyboardButton.WithCallbackData($"{products[i].Name}, {products[i].Price}, {products[i].QuantityProduct}, " +
-                                                $"{products[i].WarrantyProduct}, {products[i].State}", $"{products[i].ID}") });
-                                        }
-                                        var inlineKeyboard = new InlineKeyboardMarkup(
-                                        
-                                        buttons.ToArray()
-                                        );
+                                            var inlineKeyboard = new InlineKeyboardMarkup(
+                                                new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData($"Удалить!", $"{products[i].ID}") }
+                                            );
 
-                                        await botClient.SendTextMessageAsync(
-                                            chat.Id,
-                                            "Выберите видеокарту для удаления",
-                                            replyMarkup: inlineKeyboard);
+                                            await botClient.SendTextMessageAsync(
+                                                chat.Id,
+                                                $"{products[i].Name}, {products[i].Price}, {products[i].QuantityProduct}\n" +
+                                                    $"{products[i].WarrantyProduct}, {products[i].State}",
+                                                replyMarkup: inlineKeyboard);
+                                        }
 
                                         return;
+                                    }
+                                    else if (user.Id == 971061398 && IsUpDownProduct)
+                                    {
+                                        int result = 0;
+                                        if (int.TryParse(message.Text, out result))
+                                        {
+                                            IsUpDownProduct = false;
+                                            WorkingToDB.SetProductUpDownt(Product, Convert.ToInt32(message.Text));
+                                            Product = null;
+                                            var replyKeyboard = new ReplyKeyboardMarkup(
+                                                new List<KeyboardButton[]>()
+                                                {
+                                            new KeyboardButton[]
+                                                {
+                                                new KeyboardButton("Покажи видеокарты в наличие"),
+                                                new KeyboardButton("Добавить видеокарты"),
+                                                 
+                                                 //todo вернуть когда понадобиться база заказчиков
+                                                //new KeyboardButton("Показать всех заказчиков"),
+                                                },
+                                            new KeyboardButton[]
+                                            {
+                                                new KeyboardButton("Удаление видеокарты"),
+                                                 new KeyboardButton("Изменение количества видеокарт в наличие"),
+                                            }
+                                                })
+                                            {
+                                                ResizeKeyboard = true,
+                                            };
+                                            await botClient.SendTextMessageAsync(
+                                             chat.Id,
+                                            "Выберите действие!",
+                                            replyMarkup: replyKeyboard);
+                                        }
+                                        else
+                                        {
+                                            await botClient.SendTextMessageAsync(
+                                            chat.Id,
+                                            "Неверный формат");
+                                        }
                                     }
 
                                 }
@@ -294,12 +372,38 @@ namespace VoiakaBotBackEnd
                         var user1 = callbackQuery.From;
 
                         // Выводим на экран нажатие кнопки
-                        Console.WriteLine($"{user1.FirstName} ({user1.Id}) нажал на кнопку: {callbackQuery.Data}");
+                        Console.WriteLine($"{user1.Username} ({user1.Id}) нажал на кнопку: {callbackQuery.Data}");
 
                         // Вот тут нужно уже быть немножко внимательным и не путаться!
                         // Мы пишем не callbackQuery.Chat , а callbackQuery.Message.Chat , так как
                         // кнопка привязана к сообщению, то мы берем информацию от сообщения.
                         var chat1 = callbackQuery.Message.Chat;
+                        if (user1.Id == 971061398 && IsUpDownProduct)
+                        {
+                            for (int i = 0; i < products.Count; i++)
+                            {
+                                if (callbackQuery.Data == products[i].ID.ToString())
+                                {
+                                    Product = WorkingToDB.GetProductUpDown(products[i].ID).Result;
+                                    var replyKeyboard = new ReplyKeyboardMarkup(
+                                            new List<KeyboardButton[]>()
+                                        {
+                                            new KeyboardButton[]
+                                            {
+                                                new KeyboardButton("Отменить изменение количества видеокарт")
+                                            },
+                                        })
+                                    {
+                                        ResizeKeyboard = true,
+                                    };
+                                    await botClient.SendTextMessageAsync(
+                                chat1.Id,
+                                "Активирован режим изменения количества видеокарт отправьте новое количесвто",
+                                replyMarkup: replyKeyboard);
+                                }
+                            }
+                            return;
+                        }
                         if (user1.Id == 971061398 && IsDelProduct)
                         {
                             IsDelProduct = false;

@@ -85,7 +85,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ConsultationText.txt" />
+    <Content Include="ConsultationText.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="DataBaseVoiakaBot.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
