@@ -244,30 +244,10 @@ namespace VoiakaBotBackEnd
                                     "Не верный формат\nФормат должен быть: имя продукта,цену,количество,срок гарантии,состояние\nс учётом запятых");
                                             return;
                                         }
-                                        IsSetProduct = false;
                                         WorkingToDB.SetProduct(strings[0], strings[1], Convert.ToInt32(strings[2]), strings[3], strings[4]);
-                                        var replyKeyboard = new ReplyKeyboardMarkup(
-                                            new List<KeyboardButton[]>()
-                                            {
-                                            new KeyboardButton[]
-                                                {
-                                                new KeyboardButton("Покажи видеокарты в наличие"),
-                                                new KeyboardButton("Добавить видеокарты"),
-                                                //new KeyboardButton("Показать всех заказчиков"),
-                                                },
-                                            new KeyboardButton[]
-                                            {
-                                                new KeyboardButton("Удаление видеокарты"),
-                                                 new KeyboardButton("Изменение количества видеокарт в наличие"),
-                                            }
-                                            })
-                                        {
-                                            ResizeKeyboard = true,
-                                        };
                                         await botClient.SendTextMessageAsync(
                                          chat.Id,
-                                        "Выберите действие!",
-                                        replyMarkup: replyKeyboard);
+                                        "Введите следующую видеокарту\nДля отмены нажмите отменить добавление");
                                     }
                                     else if (message.Text == "Отменить добавление видеокарты" && user.Id == 1066338252 || message.Text == "Отменить изменение количества видеокарт" && user.Id == 1066338252)
                                     {
@@ -356,7 +336,7 @@ namespace VoiakaBotBackEnd
                                         {
                                             await botClient.SendTextMessageAsync(
                                             chat.Id,
-                                            "Неверный формат");
+                                            "Не понимаю команду");
                                         }
                                     }
 
