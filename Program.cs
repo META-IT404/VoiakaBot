@@ -247,7 +247,7 @@ namespace VoiakaBotBackEnd
                                         WorkingToDB.SetProduct(strings[0], strings[1], Convert.ToInt32(strings[2]), strings[3], strings[4]);
                                         await botClient.SendTextMessageAsync(
                                          chat.Id,
-                                        "Введите следующую видеокарту\nДля отмены нажмите отменить добавление");
+                                        "Введите следующую видеокарту");
                                     }
                                     else if (message.Text == "Отменить добавление видеокарты" && user.Id == 1066338252 || message.Text == "Отменить изменение количества видеокарт" && user.Id == 1066338252)
                                     {
@@ -336,9 +336,17 @@ namespace VoiakaBotBackEnd
                                         {
                                             await botClient.SendTextMessageAsync(
                                             chat.Id,
-                                            "Не понимаю команду");
+                                            "Не верный формат, должна быть цифра");
                                         }
+
                                     }
+                                    else
+                                    {
+                                        await botClient.SendTextMessageAsync(
+                                        chat.Id,
+                                        "Не понимаю команду");
+                                    }
+
 
                                 }
                                 break;
