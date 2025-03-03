@@ -78,7 +78,7 @@ namespace VoiakaBotBackEnd
                             case MessageType.Text:
                                 {
                                     // тут обрабатываем команду /start, остальные аналогично
-                                    if (message.Text == "/start" && user.Id == 971061398)
+                                    if (message.Text == "/start" && user.Id == 1066338252)
                                     {
                                         // Тут создаем нашу клавиатуру
                                         var replyKeyboard = new ReplyKeyboardMarkup(
@@ -87,7 +87,7 @@ namespace VoiakaBotBackEnd
                                             new KeyboardButton[]
                                             {
                                                 new KeyboardButton("Покажи видеокарты в наличие"),
-                                                new KeyboardButton("Добавить видеокарт"),
+                                                new KeyboardButton("Добавить видеокарты"),
                                                 //todo вернуть когда понадобиться база заказчиков
                                                 //new KeyboardButton("Показать всех заказчиков"),
                                             },
@@ -131,7 +131,7 @@ namespace VoiakaBotBackEnd
                                             $"{System.IO.File.ReadAllText(Directory.GetCurrentDirectory() + "\\ConsultationText.txt")}"
                                             );
                                     }
-                                    else if (message.Text == "Покажи видеокарты в наличие" && user.Id == 971061398)
+                                    else if (message.Text == "Покажи видеокарты в наличие" && user.Id == 1066338252)
                                     {
                                         products = WorkingToDB.GetAllProduct().Result;
                                         await botClient.SendTextMessageAsync(
@@ -172,7 +172,7 @@ namespace VoiakaBotBackEnd
                                         return;
                                     }
 
-                                    else if (message.Text == "Изменение количества видеокарт в наличие" && user.Id == 971061398)
+                                    else if (message.Text == "Изменение количества видеокарт в наличие" && user.Id == 1066338252)
                                     {
                                         IsUpDownProduct = true;
                                         products = WorkingToDB.GetAllProduct().Result;
@@ -215,7 +215,7 @@ namespace VoiakaBotBackEnd
 
                                     //    return;
                                     //}
-                                    else if (message.Text == "Добавить видеокарты" && user.Id == 971061398)
+                                    else if (message.Text == "Добавить видеокарты" && user.Id == 1066338252)
                                     {
                                         IsSetProduct = true;
                                         var replyKeyboard = new ReplyKeyboardMarkup(
@@ -234,7 +234,7 @@ namespace VoiakaBotBackEnd
                                     "Активирован режим добавление товара отправьте имя продукта,цену,количество,срок гарантии,состояние",
                                     replyMarkup: replyKeyboard);
                                     }
-                                    else if (user.Id == 971061398 && IsSetProduct)
+                                    else if (user.Id == 1066338252 && IsSetProduct)
                                     {
                                         string[] strings = message.Text.Split(',');
                                         if (strings == null || strings.Length != 5)
@@ -252,7 +252,7 @@ namespace VoiakaBotBackEnd
                                             new KeyboardButton[]
                                                 {
                                                 new KeyboardButton("Покажи видеокарты в наличие"),
-                                                new KeyboardButton("Добавить видеокарту"),
+                                                new KeyboardButton("Добавить видеокарты"),
                                                 //new KeyboardButton("Показать всех заказчиков"),
                                                 },
                                             new KeyboardButton[]
@@ -269,7 +269,7 @@ namespace VoiakaBotBackEnd
                                         "Выберите действие!",
                                         replyMarkup: replyKeyboard);
                                     }
-                                    else if (message.Text == "Отменить добавление видеокарты" && user.Id == 971061398 || message.Text == "Отменить изменение количества видеокарт" && user.Id == 971061398)
+                                    else if (message.Text == "Отменить добавление видеокарты" && user.Id == 1066338252 || message.Text == "Отменить изменение количества видеокарт" && user.Id == 1066338252)
                                     {
                                         IsSetProduct = false;
                                         IsUpDownProduct = false;
@@ -297,7 +297,7 @@ namespace VoiakaBotBackEnd
                                         "Выберите действие!",
                                         replyMarkup: replyKeyboard);
                                     }
-                                    else if (message.Text == "Удаление видеокарты" && user.Id == 971061398)
+                                    else if (message.Text == "Удаление видеокарты" && user.Id == 1066338252)
                                     {
                                         IsDelProduct = true;
                                         products = WorkingToDB.GetAllProduct().Result;
@@ -319,7 +319,7 @@ namespace VoiakaBotBackEnd
 
                                         return;
                                     }
-                                    else if (user.Id == 971061398 && IsUpDownProduct)
+                                    else if (user.Id == 1066338252 && IsUpDownProduct)
                                     {
                                         int result = 0;
                                         if (int.TryParse(message.Text, out result))
@@ -378,7 +378,7 @@ namespace VoiakaBotBackEnd
                         // Мы пишем не callbackQuery.Chat , а callbackQuery.Message.Chat , так как
                         // кнопка привязана к сообщению, то мы берем информацию от сообщения.
                         var chat1 = callbackQuery.Message.Chat;
-                        if (user1.Id == 971061398 && IsUpDownProduct)
+                        if (user1.Id == 1066338252 && IsUpDownProduct)
                         {
                             for (int i = 0; i < products.Count; i++)
                             {
@@ -404,7 +404,7 @@ namespace VoiakaBotBackEnd
                             }
                             return;
                         }
-                        if (user1.Id == 971061398 && IsDelProduct)
+                        if (user1.Id == 1066338252 && IsDelProduct)
                         {
                             IsDelProduct = false;
                             for (int i = 0; i < products.Count; i++)
