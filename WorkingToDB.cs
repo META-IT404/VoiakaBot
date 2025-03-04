@@ -15,7 +15,7 @@ namespace VoiakaBotBackEnd
         public async static Task<List<Product>> GetAllProduct()
         {
             List<Product> products = new List<Product>();
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -42,7 +42,7 @@ namespace VoiakaBotBackEnd
         }
         public async static Task<string> BuyProduct(int idProduct, string userName)
         {
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -104,7 +104,7 @@ namespace VoiakaBotBackEnd
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
                 {
                     connection.Open();
                     using (SqlCommand cmd = connection.CreateCommand())
@@ -126,7 +126,7 @@ namespace VoiakaBotBackEnd
             try
             {
                 List<Orders> orders = new List<Orders>();
-                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
                 {
                     connection.Open();
                     using (SqlCommand cmd = connection.CreateCommand())
@@ -158,7 +158,7 @@ namespace VoiakaBotBackEnd
         }
         public async static void SetProductUpDownt(Product product, int count)
         {
-            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
             {
                 connection.Open();
                 using (SqlCommand cmd = connection.CreateCommand())
@@ -174,7 +174,7 @@ namespace VoiakaBotBackEnd
             try
             {
                 Product product = null;
-                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
                 {
                     connection.Open();
                     using (SqlCommand cmd = connection.CreateCommand())
@@ -208,7 +208,7 @@ namespace VoiakaBotBackEnd
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
                 {
                     connection.Open();
                     using (SqlCommand cmd = connection.CreateCommand())
@@ -226,7 +226,7 @@ namespace VoiakaBotBackEnd
         {
             try
             {
-                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Directory.GetCurrentDirectory()}\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+                using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
                 {
                     connection.Open();
                     using (SqlCommand cmd = connection.CreateCommand())

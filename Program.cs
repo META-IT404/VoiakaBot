@@ -27,6 +27,12 @@ namespace VoiakaBotBackEnd
         private static ReceiverOptions _receiverOptions;
         static async Task Main(string[] args)
         {
+            string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\DBVoiakaBot";
+            if (!System.IO.File.Exists(path + "\\DataBaseVoiakaBot.mdf"))
+            {
+                Directory.CreateDirectory(path);
+                System.IO.File.Copy(Directory.GetCurrentDirectory() + "\\DataBaseVoiakaBot.mdf", path + "\\DataBaseVoiakaBot.mdf");
+            }
             _client = new TelegramBotClient("7130742648:AAFvkFe7DgbEGKUSSSWSwyHxgueR5oZtUak");
             _receiverOptions = new ReceiverOptions
             {
@@ -94,8 +100,11 @@ namespace VoiakaBotBackEnd
                                             new KeyboardButton[]
                                             {
                                                 new KeyboardButton("Удаление видеокарты"),
-                                                 new KeyboardButton("Изменение количества видеокарт в наличие"),
-                                            }
+                                                 new KeyboardButton("Изменение количества видеокарт в наличие"), },
+                                            //new KeyboardButton[]
+                                            //{
+                                            //     new KeyboardButton("Изменение цену видеокарты"),
+                                            //}
                                         })
                                         {
                                             ResizeKeyboard = true,
@@ -159,14 +168,17 @@ namespace VoiakaBotBackEnd
                                             "Выберите видеокарту для заказа");
                                         for (int i = 0; i < products.Count; i++)
                                         {
-                                            var inlineKeyboard = new InlineKeyboardMarkup(
-                                            new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData($"Заказать!", $"{products[i].ID}") });
+                                            if (products[i].QuantityProduct > 0)
+                                            {
+                                                var inlineKeyboard = new InlineKeyboardMarkup(
+                                                new InlineKeyboardButton[] { InlineKeyboardButton.WithCallbackData($"Заказать!", $"{products[i].ID}") });
 
-                                            await botClient.SendTextMessageAsync(
-                                                chat.Id,
-                                                $"{products[i].Name}, {products[i].Price}\n" +
-                                                $"{products[i].WarrantyProduct}, {products[i].State}",
-                                                replyMarkup: inlineKeyboard);
+                                                await botClient.SendTextMessageAsync(
+                                                    chat.Id,
+                                                    $"{products[i].Name}, {products[i].Price}\n" +
+                                                    $"{products[i].WarrantyProduct}, {products[i].State}",
+                                                    replyMarkup: inlineKeyboard);
+                                            }
                                         }
 
                                         return;
@@ -302,7 +314,9 @@ namespace VoiakaBotBackEnd
                                     else if (user.Id == 1066338252 && IsUpDownProduct)
                                     {
                                         int result = 0;
-                                        if (int.TryParse(message.Text, out result))
+                                        string str = message.Text;
+                                        str = str.Replace("\n", "").Replace("\n", "").Trim();
+                                        if (int.TryParse(str, out result))
                                         {
                                             IsUpDownProduct = false;
                                             WorkingToDB.SetProductUpDownt(Product, Convert.ToInt32(message.Text));
