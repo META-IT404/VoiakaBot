@@ -315,7 +315,7 @@ namespace VoiakaBotBackEnd
                                     {
                                         int result = 0;
                                         string str = message.Text;
-                                        str = str.Replace("\n", "").Replace("\n", "").Trim();
+                                        str = str.Replace("\n", "").Replace("\r", "").Trim();
                                         if (int.TryParse(str, out result))
                                         {
                                             IsUpDownProduct = false;
