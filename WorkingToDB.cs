@@ -169,6 +169,19 @@ namespace VoiakaBotBackEnd
                 }
             }
         }
+        public async static void SetProductUpDownPrice(Product product, string price)
+        {
+            using (SqlConnection connection = new SqlConnection($"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\\DBVoiakaBot\\DataBaseVoiakaBot.mdf;Integrated Security=True"))
+            {
+                connection.Open();
+                using (SqlCommand cmd = connection.CreateCommand())
+                {
+                    cmd.CommandText = $"UPDATE Production SET PriceProduct = @PriceProduct WHERE Id = {product.ID}";
+                    cmd.Parameters.Add("@PriceProduct", SqlDbType.NVarChar).Value = price;
+                    await cmd.ExecuteNonQueryAsync();
+                }
+            }
+        }
         public async static Task<Product> GetProductUpDown(int idProduct)
         {
             try
